@@ -1,0 +1,62 @@
+/**
+ * File:    ApplyTextureRule.cga
+ * Created: 26 Mar 2016 14:31:31 GMT
+ * Author:  tatiannaswenda
+ */
+
+version "2015.2"
+
+/* Attributes *************************************/
+
+@Range(2,6)
+attr groundfloor_height = 4
+@Range(2,6)
+attr floor_height 		= 3.5
+
+@Range(1,10)
+attr tile_width 		= rand(2.5,6)
+@Range(3,50)
+attr height 			= rand(11,30) 
+attr wallColor  =        
+	50% :  "#ffffff"
+	50% :  "#ffffff"
+	else :  "#ffffff"
+
+@Range(LOD0=0,LOD1=1)
+attr LOD 				= 0
+
+
+
+// textures
+const frontdoor_tex 		= "/MCCAI/images/Gravel.jpg"
+const wall_tex 				= "/MCCAI/images/Gravel.jpg"
+const dirt_tex				= "/MCCAI/images/Gravel.jpg"
+const roof_tex 				= "/MCCAI/images/Gravel.jpg"
+
+Lot --> 
+	extrude(height) Building
+	
+	# split the building geometry into its facade components
+Building -->
+	comp(f) { front : Frontfacade | side : Sidefacade | top: Roof}
+	
+Frontfacade -->	
+	setupProjection(0, scope.xy, 1.5, 1, 1) # setup 1.5m x 1m texture tiles along scopes xy plane (and distortion in z)
+	setupProjection(2, scope.xy, scope.sx, scope.sy)
+	texture(wall_tex)
+	split(y){ groundfloor_height    : Sidefacade
+			| {~floor_height : Floor.}* }
+			
+Sidefacade --> 
+	setupProjection(0, scope.xy, 1.5, 1, 1) # setup 1.5m x 1m texture tiles along scopes xy plane (and distortion in z)
+	setupProjection(2, scope.xy, scope.sx, scope.sy)
+	texture(wall_tex)
+	split(y){ groundfloor_height    : Roof 
+			| {~floor_height : Floor.}* }
+
+Roof --> 
+	color(wallColor)
+	setupProjection(0, scope.xy, scope.sx, scope.sy)
+	texture(roof_tex)
+	projectUV(0) 
+	

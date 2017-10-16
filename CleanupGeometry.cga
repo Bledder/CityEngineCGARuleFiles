@@ -1,0 +1,12 @@
+/**
+ * File:    CleanupGeometry.cga
+ * Created: 2 Apr 2016 17:25:35 GMT
+ * Author:  Brian
+ */
+
+version "2015.1"
+
+
+Init-->
+   i("/MCCAI/assets/model.dae")
+   cleanupGeometry(all, 0.1)

@@ -1,0 +1,307 @@
+/**
+ * File:    Extrude.cga
+ * Created: 23 Jun 2016 09:53:09 GMT
+ * Author:  Brian
+ */
+
+version "2015.2"
+###########CONSTANTS############
+usageColor = 
+	case CODE == CA1: "#e251e2"
+	case CODE == CA2: "#e251e2"
+	case CODE == CMX1: "#e251e2"
+	case CODE == CMX2: "#e251e2"
+	case CODE == CMX25: "#e251e2"
+	case CODE == CMX3: "#e251e2"
+	case CODE == CMX4: "#e251e2"
+	case CODE == CMX5: "#e251e2"
+	case CODE == I1: "#5165e2"
+	case CODE == I2: "#5165e2"
+	case CODE == I3: "#5165e2"
+	case CODE == ICMX: "#5165e2"
+	case CODE == IP: "#5165e2"
+	case CODE == IRMX: "#5165e2"
+	case CODE == RM1: "#f9fc4b"
+	case CODE == RM2: "#f9fc4b"
+	case CODE == RM3: "#f9fc4b"
+	case CODE == RM4: "#f9fc4b"
+	case CODE == RMX1: "#f9fc4b"
+	case CODE == RMX2: "#f9fc4b"
+	case CODE == RMX3: "#f9fc4b"
+	case CODE == RSA1: "#f9fc4b"
+	case CODE == RSA2: "#f9fc4b"
+	case CODE == RSA3: "#f9fc4b"
+	case CODE == RSA4: "#f9fc4b"
+	case CODE == RSA5: "#f9fc4b"
+	case CODE == RSD1: "#f9fc4b"
+	case CODE == RSD2: "#f9fc4b"
+	case CODE == RSD3: "#f9fc4b"
+	case CODE == RTA1: "#f9fc4b"
+	case CODE == SPAIR: "#2fa826"
+	case CODE == SPENT: "#2fa826"
+	case CODE == PPINS: "#2fa826"
+	case CODE == SPPOA: "#2fa826"
+	case CODE == SPPOP: "#2fa826"
+	case CODE == SPSTA: "#2fa826"	
+	else: "#FFFFFF"
+	
+	
+PropertyValueColor = 
+	case Property_V == "0": "#ffffff"
+	case Property_V == "1": "#ffffff"
+	case Property_V == "2": "#e5f5e5"
+	case Property_V == "3": "#99d999"
+	case Property_V == "4": "#7fcf7f"
+	case Property_V == "5": "#4cbc4c"
+	case Property_V == "6": "#19a919"
+	case Property_V == "7": "#009000"
+	else: "#FFFFFF"
+	
+EnergyUseColor = 
+	case EnergyUse >= 0 && EnergyUse <= 3000: "#36D845"
+	case EnergyUse >= 3001 && EnergyUse <= 7000: "#5fe326"
+	case EnergyUse >= 7001 && EnergyUse <= 12000: "#67cf1b"
+	case EnergyUse >= 12001 && EnergyUse <= 50000: "#e3f34a"
+	case EnergyUse >= 50001 && EnergyUse <= 200000: "#f3c54a"
+	case EnergyUse >= 200001 && EnergyUse <= 1000000: "#ed7132"
+	case EnergyUse >= 1000001 && EnergyUse <= 32000000: "#f52521"
+	else: "#FFFFFF"
+	
+DensityColor = 
+	case NumPeople >= 0 && NumPeople < 1: "#ffffff"
+	case NumPeople >= 1 && NumPeople < 2: "#d7d7d7"
+	case NumPeople >= 2 && NumPeople < 4: "#d3d3d3"
+	case NumPeople >= 4 && NumPeople < 7: "#a8a8a8"
+	case NumPeople >= 7 && NumPeople < 18: "#7e7e7e"
+	case NumPeople >= 18 && NumPeople < 100: "#545454"
+	case NumPeople >= 100 && NumPeople <= 1000000: "#2a2a2a"
+	else: "#FFFFFF"
+		
+###########ATTRIBUTES##COLOR###########
+texturingOn = Display_Textures 	# Shorthand.
+thematicsOn = Display_Thematics != "Thematics Off"
+coloringOn = !thematicsOn && texturingOn	# Shorthand.
+
+
+
+@Group("DISPLAY OPTIONS",0) @Order(1)
+attr Display_Textures = true
+
+@Group("DISPLAY OPTIONS") @Order(2)
+@Range("Thematics Off", "Custom Color", "Zoning Code", "Energy Usage", "Density", "Property Value")
+attr Display_Thematics = "Thematics Off" 
+
+@Group("DISPLAY OPTIONS") @Order(3)
+attr Custom_Color = "#FFFFFF"
+
+thematicColor = 
+	case Display_Thematics == "Zoning Code": usageColor
+		
+	case Display_Thematics == "Custom Color":
+		Custom_Color
+	case Display_Thematics == "Energy Usage": EnergyUseColor
+	case Display_Thematics == "Density" : DensityColor
+	case Display_Thematics == "Property Value" : PropertyValueColor
+	else:
+		"#FFFFFF"
+		
+
+##########ATTRIBUTES##HEIGHT###########
+const CA1 = "CA1"
+const CA2 = "CA2"
+const CMX1 = "CMX1"
+const CMX2 = "CMX2"
+const CMX25 = "CMX2.5"
+const CMX3 = "CMX3"
+const CMX4 = "CMX4"
+const CMX5 = "CMX5"
+const I1 = "I1"
+const I2 = "I2"
+const I3 = "I3"
+const ICMX = "ICMX"
+const IP = "IP"
+const IRMX = "IRMX"
+const RM1 = "RM1"
+const RM2 = "RM2"
+const RM3 = "RM3"
+const RM4 = "RM4"
+const RMX1 = "RMX1"
+const RMX2 = "RMX2"
+const RMX3 = "RMX3"
+const RSA1 = "RSA1"
+const RSA2 = "RSA2"
+const RSA3 = "RSA3"
+const RSA4 = "RSA4"
+const RSA5 = "RSA5"
+const RSD1 = "RSD1"
+const RSD2 = "RSD2"
+const RSD3 = "RSD3"
+const RTA1 = "RTA1"
+const SPAIR = "SPAIR"
+const SPENT = "SPENT"
+const PPINS = "PPINS"
+const SPPOA = "SPPOA"
+const SPPOP = "SPPOP"
+const SPSTA = "SPSTA"
+
+attr Height =
+	case CODE == CA1: 15.58 #11.58 Meters = 32'
+	case CODE == CA2: 15.58 #11.58 Meters = 32'
+	case CODE == CMX1: 15.58 #11.58 Meters = 32'
+	case CODE == CMX2: 15.58 #11.58 Meters = 32'
+	case CODE == CMX25: 20.76 #16.76 Meters = 55'
+	case CODE == CMX3: 22.28 #18.28 Meters = 60'
+	case CODE == CMX4: 54.48 #30.48 Meters = 100'
+	case CODE == CMX5: 54.48 #30.48 Meters = 100'
+	case CODE == I1: 74.48 #30.48 Meters = 100'
+	case CODE == I2: 74.48 #30.48 Meters = 100'
+	case CODE == I3: 74.48 #30.48 Meters = 100'
+	case CODE == ICMX: 22.28 #18.28 Meters = 60'
+	case CODE == IP: 74.48 #30.48 Meters = 100'
+	case CODE == IRMX: 22.28 #18.28 Meters = 60'
+	case CODE == RM1: 15.58 #11.58 Meters = 32'
+	case CODE == RM2: 22.28 #18.28 Meters = 60'
+	case CODE == RM3: 22.28 #18.28 Meters = 60'
+	case CODE == RM4: 22.28 #18.28 Meters = 60'
+	case CODE == RMX1: 34.48 #30.48 Meters = 100'
+	case CODE == RMX2: 34.48 #30.48 Meters = 100'
+	case CODE == RMX3: 34.48 #30.48 Meters = 100'
+	case CODE == RSA1: 15.58 #11.58 Meters = 32'
+	case CODE == RSA2: 15.58 #11.58 Meters = 32'
+	case CODE == RSA3: 15.58 #11.58 Meters = 32'
+	case CODE == RSA4: 15.58 #11.58 Meters = 32'
+	case CODE == RSA5: 15.58 #11.58 Meters = 32'
+	case CODE == RSD1: 15.58 #11.58 Meters = 32'
+	case CODE == RSD2: 15.58 #11.58 Meters = 32'
+	case CODE == RSD3: 15.58 #11.58 Meters = 32'
+	case CODE == RTA1: 15.58 #11.58 Meters = 32'
+	case CODE == SPAIR: 0 #Parkland
+	case CODE == SPENT: 0 #Parkland
+	case CODE == PPINS: 0 #Parkland
+	case CODE == SPPOA: 0 #Parkland
+	case CODE == SPPOP: 0 #Parkland
+	case CODE == SPSTA: 0 #Parkland	
+	else: 0
+
+@Group("Input",0) @Order(1)
+@Range("CA1", "CA2", "CMX1", "CMX2", "Cmx2.5", "CMX3", "CMX4", "CMX5", "I1", "I2", "I3", "ICMX", "IP", "IRMX", "RM1", "RM2", "RM3", "RM4", "RMX1", "RMX2", "RMX3", "RSA1", "RSA2", "RSA3", "RSA4", "RSA5", "RSD1", "RSD2", "RSD3", "RTA1", "SPAIR", "SPENT", "SPINS", "SPPOA", "SPPOP", "SPSTA")
+attr CODE = "None"
+
+@Range ("0","1","2","3","4","5","6","7")
+attr Property_V = "None"
+
+attr opacityvalue=0.6 
+
+########HIDDEN##############
+@Hidden
+attr Building_Footprint_Area = geometry.area
+
+@Hidden
+attr KWH =
+	case CODE == CA1: 1.1
+	case CODE == CA2: 1.1
+	case CODE == CMX1: 1.1
+	case CODE == CMX2: 1.1
+	case CODE == CMX25: 1.1
+	case CODE == CMX3: 1.1
+	case CODE == CMX4: 1.1
+	case CODE == CMX5: 1.1
+	case CODE == I1: 2.1
+	case CODE == I2: 2.1
+	case CODE == I3: 2.1
+	case CODE == ICMX: 2.1
+	case CODE == IP: 2.1
+	case CODE == IRMX: 2.1
+	case CODE == RM1: .68
+	case CODE == RM2: .68
+	case CODE == RM3: .68
+	case CODE == RM4: .68
+	case CODE == RMX1: .68
+	case CODE == RMX2: .68
+	case CODE == RMX3: .68
+	case CODE == RSA1: .68
+	case CODE == RSA2: .68
+	case CODE == RSA3: .68
+	case CODE == RSA4: .68
+	case CODE == RSA5: .68
+	case CODE == RSD1: .68
+	case CODE == RSD2: .68
+	case CODE == RSD3: .68
+	case CODE == RTA1: .68
+	case CODE == SPAIR: 0
+	case CODE == SPENT: 0
+	case CODE == PPINS: 0
+	case CODE == SPPOA: 0
+	case CODE == SPPOP: 0
+	case CODE == SPSTA: 0	
+	else: 0
+	
+@Hidden
+attr EnergyUse =
+	Building_Footprint_Area * Height * 35.3147 * KWH
+	
+@Hidden
+attr SFPerUnit = 
+	case CODE == CA1: 480
+	case CODE == CA2: 480
+	case CODE == CMX1: 480
+	case CODE == CMX2: 480
+	case CODE == CMX25: 480
+	case CODE == CMX3: 480
+	case CODE == CMX4: 480
+	case CODE == CMX5: 480
+	case CODE == I1: 0
+	case CODE == I2: 0
+	case CODE == I3: 0
+	case CODE == ICMX: 360
+	case CODE == IP: 0
+	case CODE == IRMX: 360
+	case CODE == RM1: 480
+	case CODE == RM2: 480
+	case CODE == RM3: 480
+	case CODE == RM4: 480
+	case CODE == RMX1: 480
+	case CODE == RMX2: 480
+	case CODE == RMX3: 480
+	case CODE == RSA1: 480
+	case CODE == RSA2: 480
+	case CODE == RSA3: 480
+	case CODE == RSA4: 480
+	case CODE == RSA5: 480
+	case CODE == RSD1: 480
+	case CODE == RSD2: 480
+	case CODE == RSD3: 480
+	case CODE == RTA1: 480
+	case CODE == SPAIR: 0
+	case CODE == SPENT: 0
+	case CODE == PPINS: 0
+	case CODE == SPPOA: 0
+	case CODE == SPPOP: 0
+	case CODE == SPSTA: 0	
+	else: 0
+	
+@Hidden
+attr NumPeople =
+	(((Building_Footprint_Area * 10.7639) / (SFPerUnit)) * 3 )
+
+
+########################################################
+Lot-->
+	extrude (Height *1)
+	color (thematicColor)
+	set (material.opacity,opacityvalue)
+	report("Building Volume (Cubic Feet)", (Building_Footprint_Area * Height)*35.3147)
+	report("Building Height (Feet)", Height * 3.2808)
+	report("Energy Usage (KWH per Year)", (Building_Footprint_Area * Height) * 35.3147 * KWH)
+	report ("Density (# People)", (((Building_Footprint_Area * 10.7639) / (SFPerUnit)) * 3 ))
+	
+	
+
+
+
+
+
+
+	
+
+
